@@ -1,0 +1,14 @@
+.imgCss{
+    height: 60px;
+    width: 60px;
+}
+.ant-select{
+    display: block !important;
+}
+.ant-form-item{
+    padding: 0 !important; 
+}
+
+.ant-form-vertical .ant-form-item-label, .ant-col-24.ant-form-item-label, .ant-col-xl-24.ant-form-item-label{
+    padding: 0px !important;
+}

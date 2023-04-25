@@ -1,0 +1,12 @@
+.error {
+    color:#db2269;
+    font-size: 1.0em;
+    display: relative;
+  }
+  .deleteModelText{
+    font-size: 1.0rem;
+  }
+
+  .description-wrapper .ck-sticky-panel__content{
+    display: none;
+  }   
