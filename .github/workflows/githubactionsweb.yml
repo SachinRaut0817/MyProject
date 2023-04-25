@@ -20,3 +20,23 @@ jobs:
       run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME
     - name: Docker Push
       run: docker push $DOCKER_USER/$REPO_NAME
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/dev.key
+          chmod 600 ~/.ssh/dev.key
+          cat >>~/.ssh/config <<END
+            Host stage
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/dev.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.SSH_USER_DEV }}
+          SSH_KEY: ${{ secrets.SSH_KEY_DEV }}
+          SSH_HOST: ${{ secrets.SSH_HOST_DEV }}
+      - name: Deploy Stage Build
+        run: |
+          ssh stage 'echo "${{ secrets.DOCKER_PASSWORD }}" | docker login ghcr.io -u "${{ secrets.DOCKER_USER }}" --password-stdin'
+          ssh stage 'cd /var/www/html/web; docker system prune -f; docker-compose pull; docker-compose up -d --force-recreate'
