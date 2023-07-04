@@ -28,5 +28,5 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST_DEV }}
     - name: Deploy Stage Build
       run: |
-          scp -r $GITHUB_WORKSPACE/.github/workflows/logs $SSH_USER@$SSH_HOST:/var/www/html/web
+        cd $GITHUB_WORKSPACE/.github/workflows/logs | ls
 
