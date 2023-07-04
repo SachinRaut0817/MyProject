@@ -28,7 +28,5 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST_DEV }}
     - name: Deploy Stage Build
       run: |
-          echo "${{ github.run_id }}"    
           scp -r $GITHUB_WORKSPACE/.github/workflows/logs $SSH_USER@$SSH_HOST:/var/www/html/web
-          ssh stage 'echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin'
-          ssh stage 'cd /var/www/html/web; docker system prune -f; docker-compose pull; docker-compose up -d --force-recreate'
+
