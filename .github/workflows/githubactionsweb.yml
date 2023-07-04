@@ -10,16 +10,6 @@ jobs:
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
     steps:
     - uses: actions/checkout@v2 # first action : checkout source code
-    - name: docker login
-      run: | # log into docker hub account
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD  
-    - name: Get current date # get the date of the build
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
-    - name: Build the Docker image # push The image to the docker hub
-      run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME
-    - name: Docker Push
-      run: docker push $DOCKER_USER/$REPO_NAME
     - name: Configure SSH
       run: |
           mkdir -p ~/.ssh/
@@ -38,6 +28,7 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST_DEV }}
     - name: Deploy Stage Build
       run: |
-          echo "${{ github.run_id }}"        
+          echo "${{ github.run_id }}"    
+          scp -r $GITHUB_WORKSPACE/.github/workflows/logs $SSH_USER@$SSH_HOST:/var/www/html/web
           ssh stage 'echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin'
           ssh stage 'cd /var/www/html/web; docker system prune -f; docker-compose pull; docker-compose up -d --force-recreate'
