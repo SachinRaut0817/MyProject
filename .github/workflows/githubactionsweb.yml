@@ -28,5 +28,5 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST_DEV }}
     - name: Deploy Stage Build
       run: |
-        cd $GITHUB_WORKSPACE/.github/workflows/logs | ls
+        gh run view $GITHUB_RUN_ID --log
 
