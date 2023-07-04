@@ -5,6 +5,7 @@ env:
   DOCKER_USER: ${{secrets.DOCKER_USER}}
   DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
   REPO_NAME: ${{secrets.REPO_NAME}}
+  GH_TOKEN: ${{ github.token }}
 jobs:
   push-image-to-docker-hub:  # job name
     runs-on: ubuntu-latest  # runner name : (ubuntu latest version) 
